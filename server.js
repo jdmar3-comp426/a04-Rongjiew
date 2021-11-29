@@ -45,14 +45,14 @@ app.get("/app/user/:id",(req,res) => {
 // UPDATE a single user (HTTP method PATCH) at endpoint /app/update/user/:id
 app.patch("/app/update/user/:id",(req,res) => {
 	const getuser = db.prepare('UPDATE userinfo SET user = COALESCE(?,user), pass = COALESCE(?,pass) WHERE id = ?');
-	const output = getuser.run(req.body.user, req.body.pass, req.params.id);
-	res.status(200).json(info.changes + " 1 record created: ID " + info.lastInsertRowid)
+	const output = getuser.run(req.body.user, md5(req.body.pass), req.params.id);
+	res.status(200).json({"message":"1 record updated: ID 2 (200)"})
 })
 // DELETE a single user (HTTP method DELETE) at endpoint /app/delete/user/:id
 app.delete("/app/delete/user/:id",(req,res) => {
 	const getuser = db.prepare('DELETE FROM userinfo WHERE id = ?');
 	const output = getuser.run(req.params.id);
-	res.status(200).json(output)
+	res.status(200).json({"message":"1 record deleted: ID 2 (200)"})
 })
 // Default response for any other request
 app.use(function(req, res){
